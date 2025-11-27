@@ -2,20 +2,8 @@
 
 $url = "../";
 
-include $url . 'include/header.php';
+include $url.'include/header.php';
 ?>
-
-
-
-
-<input type="text" name="name" class="form-control" id="name" placeholder="Your Name" required="">
-<input type="email" class="form-control" name="email" id="email" placeholder="Your Email" required="">
-<input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" required="">
-<textarea class="form-control" name="message" rows="5" placeholder="Message" required=""></textarea>
-
-
-
-
 
 
 
@@ -58,4 +46,4 @@ include $url . 'include/header.php';
     </section>
 
 
-<?php include $url.'include/footer.php'; ?>
+<?php include $url.'include/footer.php';?>

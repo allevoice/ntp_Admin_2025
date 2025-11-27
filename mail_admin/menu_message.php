@@ -59,24 +59,23 @@
             </ul>
         </div>
 
-        <form class="d-flex flex-grow-1 gap-2">
 
-            <input class="form-control flex-grow-1"
-                   type="search"
-                   placeholder="Rechercher un message..."
-                   aria-label="Search">
 
-            <button class="btn btn-primary flex-shrink-0" type="submit">
-                <i class="bi bi-search"></i>
-                <span class="d-none d-md-inline ms-1">Rechercher</span>
-            </button>
 
-            <button class="btn btn-outline-secondary flex-shrink-0" type="reset">
-                <i class="bi bi-x-circle"></i>
-                <span class="d-none d-md-inline ms-1">Reset</span>
-            </button>
 
-        </form>
 
+
+
+
+
+
+
+
+
+
+
+
+
+form searche
     </div>
 </div>

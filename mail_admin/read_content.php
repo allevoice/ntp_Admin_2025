@@ -5,9 +5,4 @@
 
     <?php include $url."mail_admin/read_content_message.php";?>
 
-
-
-
-
-
 </div>
