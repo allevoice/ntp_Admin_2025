@@ -1,0 +1,55 @@
+{# templates/partials/_language_switcher.html.twig #}
+
+{% set currentLocale = app.request.locale %}
+
+<div class="dropdown">
+
+    {# 1. Bouton principal #}
+    <a href="#" class="text-light p-0 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Sélectionner la Langue">
+        <i class="bi bi-globe fs-5"></i>
+        <span>{{ currentLocale|upper }}</span>
+    </a>
+
+    {# 2. Menu déroulant #}
+    <ul class="dropdown-menu dropdown-menu-end">
+        {# Assurez-vous que 'app_locales_array' est bien défini (via une variable globale Twig ou un set) #}
+        {% for locale in app_locales_array %}
+            {% set isActive = (locale == currentLocale) %}
+
+            {# 🥇 MODIFICATION CLÉ : Génère l'URL propre en utilisant la route et les paramètres actuels #}
+            {% set targetUrl = path(
+                app.request.attributes.get('_route'),
+                app.request.attributes.get('_route_params')|merge({'_locale': locale})
+                ) %}
+
+            <li>
+                <a
+                    class="dropdown-item {% if isActive %}active{% endif %}"
+                    href="{{ targetUrl }}"
+                    {% if isActive %}aria-current="true"{% endif %}
+                >
+                    {# BLOC DE GESTION DES DRAPEAUX SIMPLIFIÉ (Recommandé) #}
+                    <img
+                        src="{{ asset('assets/img/flags/' ~ locale ~ '.svg') }}"
+                        alt="{{ locale|upper }}"
+                        class="flag-icon"
+                    >
+
+                    {{ locale | upper }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+{#
+
+<div class="dropdown">
+    <a href="#" class="text-light p-0 dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false" title="Sélectionner la Langue">
+        <i class="bi bi-globe fs-5"></i>
+    </a>
+    <ul class="dropdown-menu dropdown-menu-end">
+        <li><a class="dropdown-item" href="#">🇫🇷 Français</a></li>
+        <li><a class="dropdown-item" href="#">🇬🇧 English</a></li>
+    </ul>
+</div>
+#}

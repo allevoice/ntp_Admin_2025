@@ -1,0 +1,190 @@
+
+
+
+
+<style>
+    /* Style pour les images de la galerie */
+    .project-gallery img {
+        width: 100%;
+        height: 120px; /* Hauteur fixe pour un affichage uniforme */
+        object-fit: cover; /* Recadre l'image pour remplir l'espace */
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .project-gallery img:hover {
+        transform: scale(1.05); /* Effet de zoom léger au survol */
+        cursor: pointer;
+    }
+
+    /* Espacement du titre de la galerie */
+    .sidebar-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: var(--heading-color);
+        margin-bottom: 20px;
+    }
+
+    /* --- Styles pour les Étiquettes de la Galerie --- */
+
+    .gallery-tag {
+        position: absolute;
+        top: 5px; /* Distance du haut */
+        left: 5px; /* Distance de la gauche */
+        padding: 3px 6px;
+        font-size: 20px;
+        font-weight: bold;
+        color: white; /* S'assurer que le texte est blanc sur le fond coloré */
+        border-radius: 4px;
+        z-index: 10;
+        line-height: 1; /* Assure que la hauteur est minimale */
+    }
+</style>
+
+<section id="recent-posts" class="recent-posts section">
+
+    <div class="container section-title">
+        <h2>Recent Details Project Posts</h2>
+        <p>Necessitatibus eius consequatur ex aliquid fuga eum quidem sint consectetur velit</p>
+    </div>
+
+    <div class="container" data-aos="fade-up">
+
+        <div class="row">
+
+            <div class="col-lg-8" data-aos="fade-up">
+                <article class="featured-post">
+                    <div class="featured-img">
+                        <img src="{{ asset('') }}assets/img/blog/blog-post-7.webp" alt="" class="img-fluid" loading="lazy">
+                        <div class="featured-badge">Featured</div>
+                    </div>
+
+                    <div class="featured-content">
+                        <div class="post-header">
+                            <a href="#" class="category">Technology</a>
+                            <span class="post-date">Dec 18, 2024</span>
+                        </div>
+
+                        <h2 class="post-title">
+                            <a href="#">Lorem ipsum dolor sit amet consectetur adipiscing elit mauris</a>
+                        </h2>
+
+                        <p class="post-excerpt">
+                            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit.
+                        </p>
+
+                        <div class="post-footer">
+                            <div class="author-info">
+                                <img src="{{ asset('') }}assets/img/person/person-m-8.webp" alt="" class="author-avatar">
+                                <div class="author-details">
+                                    <span class="author-name">Marcus Johnson</span>
+                                    <span class="read-time">5 min read</span>
+                                </div>
+                            </div>
+                            <a href="#" class="read-more">Read More</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+
+            <div class="col-lg-4">
+                <h3 class="sidebar-title">Galerie de Projets</h3>
+                <div class="row g-2 project-gallery" data-aos="fade-up">
+
+                    <div class="col-6">
+                        <div class="gallery-item-wrap position-relative">
+                            <a href="{{ asset('') }}assets/img/blog/blog-post-1.webp" class="glightbox" data-gallery="recent-project-gallery">
+                                <img src="{{ asset('') }}assets/img/blog/blog-post-1.webp" alt="Project Image 1" class="img-fluid rounded" loading="lazy">
+                            </a>
+                            <!--              <span class="gallery-tag text-bg-info">Digital</span>-->
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="gallery-item-wrap position-relative">
+                            <a href="{{ asset('') }}assets/img/blog/blog-post-2.webp" class="glightbox" data-gallery="recent-project-gallery">
+                                <img src="{{ asset('') }}assets/img/blog/blog-post-2.webp" alt="Project Image 2" class="img-fluid rounded" loading="lazy">
+                            </a>
+                            <span class="gallery-tag text-bg-warning">Strategy</span>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="gallery-item-wrap position-relative">
+                            <a href="{{ asset('') }}assets/img/blog/blog-post-3.webp" class="glightbox" data-gallery="recent-project-gallery">
+                                <img src="{{ asset('') }}assets/img/blog/blog-post-3.webp" alt="Project Image 3" class="img-fluid rounded" loading="lazy">
+                            </a>
+                            <span class="gallery-tag text-bg-success">Finance</span>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="gallery-item-wrap position-relative">
+                            <a href="{{ asset('') }}assets/img/blog/blog-post-4.webp" class="glightbox" data-gallery="recent-project-gallery">
+                                <img src="{{ asset('') }}assets/img/blog/blog-post-4.webp" alt="Project Image 4" class="img-fluid rounded" loading="lazy">
+                            </a>
+                            <span class="gallery-tag text-bg-primary">Tech</span>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="gallery-item-wrap position-relative">
+                            <a href="{{ asset('') }}assets/img/blog/blog-post-5.webp" class="glightbox" data-gallery="recent-project-gallery">
+                                <img src="{{ asset('') }}assets/img/blog/blog-post-5.webp" alt="Project Image 5" class="img-fluid rounded" loading="lazy">
+                            </a>
+                            <span class="gallery-tag text-bg-danger">Ops</span>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div class="gallery-item-wrap position-relative">
+                            <a href="{{ asset('') }}assets/img/blog/blog-post-6.webp" class="glightbox" data-gallery="recent-project-gallery">
+                                <img src="{{ asset('') }}assets/img/blog/blog-post-6.webp" alt="Project Image 6" class="img-fluid rounded" loading="lazy">
+                            </a>
+                            <span class="gallery-tag text-bg-dark">Data</span>
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{{ asset('') }}assets/img/blog/blog-post-1.webp" class="glightbox" data-gallery="recent-project-gallery">
+                            <img src="{{ asset('') }}assets/img/blog/blog-post-1.webp" alt="Project Image 1" class="img-fluid rounded" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{{ asset('') }}assets/img/blog/blog-post-2.webp" class="glightbox" data-gallery="recent-project-gallery">
+                            <img src="{{ asset('') }}assets/img/blog/blog-post-2.webp" alt="Project Image 2" class="img-fluid rounded" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{{ asset('') }}assets/img/blog/blog-post-3.webp" class="glightbox" data-gallery="recent-project-gallery">
+                            <img src="{{ asset('') }}assets/img/blog/blog-post-3.webp" alt="Project Image 3" class="img-fluid rounded" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{{ asset('') }}assets/img/blog/blog-post-4.webp" class="glightbox" data-gallery="recent-project-gallery">
+                            <img src="{{ asset('') }}assets/img/blog/blog-post-4.webp" alt="Project Image 4" class="img-fluid rounded" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{{ asset('') }}assets/img/blog/blog-post-5.webp" class="glightbox" data-gallery="recent-project-gallery">
+                            <img src="{{ asset('') }}assets/img/blog/blog-post-5.webp" alt="Project Image 5" class="img-fluid rounded" loading="lazy">
+                        </a>
+                    </div>
+
+                    <div class="col-6">
+                        <a href="{{ asset('') }}assets/img/blog/blog-post-6.webp" class="glightbox" data-gallery="recent-project-gallery">
+                            <img src="{{ asset('') }}assets/img/blog/blog-post-6.webp" alt="Project Image 6" class="img-fluid rounded" loading="lazy">
+                        </a>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

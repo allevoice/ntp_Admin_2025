@@ -1,0 +1,185 @@
+<style>
+    .image-container-ratio {
+        width: 100%;
+        /* Ratio plus grand, par exemple 4:3 (75%) ou 1:1 (100%) */
+        padding-top: 100%; /* Pour un carré (1:1), ou 75% pour 4:3 */
+        position: relative;
+        overflow: hidden;
+    }
+
+    .image-container-ratio img {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+    }
+
+    /* Style pour l'icône de zoom */
+    .zoom-overlay {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        z-index: 10; /* Pour s'assurer qu'il est au-dessus de l'image */
+    }
+    .zoom-overlay:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+
+
+    .product-thumbnail-gallery img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.2s ease-in-out, border-color 0.2s ease-in-out;
+        border: 2px solid transparent;
+    }
+
+    .product-thumbnail-gallery img:hover, .product-thumbnail-gallery img.active {
+        transform: scale(1.05);
+        border-color: #0d6efd;
+    }
+
+    .btn-purple {
+        background-color: #6f42c1;
+        color: #fff;
+        border-color: #6f42c1;
+    }
+    .btn-purple:hover {
+        background-color: #5d35a5;
+        border-color: #5d35a5;
+		color: #ffffff;
+    }
+
+</style>
+
+
+
+
+<div class="container py-5">
+    <a href="{{ path('app_shop_liste') }}" class="btn btn-secondary mb-4 btn-fancy-hover">
+        <i class="bi bi-arrow-left-circle me-2"></i>Return to Shop
+    </a>
+
+    {% if product %}
+
+        {% set ORIGINAL_PRICE_KEY = 'Square:a21f62b6-58b5-403d-a2cd-66e8e43e7aea' %}
+        <div class="row">
+            <div class="col-md-6">
+                {# Grand cadre d'image avec fonctionnalité de zoom #}
+                <div class="image-container-ratio mb-3 border rounded shadow-sm">
+                    <img id="main-product-image" src="{{ mainImageUrl }}" class="img-fluid rounded" alt="{{ product.item_data.name }}">
+                    {# Le lien pour le zoom #}
+                </div>
+
+                {# Galerie de vignettes en dessous #}
+                <div class="product-thumbnail-gallery d-flex flex-wrap gap-2 justify-content-center">
+                    {% for imageUrl in allProductImages %}
+                        <img src="{{ imageUrl }}" class="img-thumbnail rounded" alt="Product Image"
+                             onclick="updateMainImage(this);">
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-6">
+                <h1 class="mb-3">{{ product.item_data.name }}</h1>
+                <p class="text-muted">
+                    {% set categoryId = product.item_data.categories[0].id ?? null %}
+                    {{ categoryId ? categories[categoryId] ?? 'Category none' : 'Category none' }}
+                </p>
+
+
+
+                <div class="d-flex align-items-center">
+                    {# 1. PRIX ACTUEL (ou texte générique) #}
+                    <h2 class="text-primary my-4 me-3">{{ priceText }}</h2>
+
+                    {# 2. PRIX PRÉCÉDENT / PRIX NORMAL (selon la condition) #}
+                    {# 🎯 Extraction et Conversion des prix pour la comparaison #}
+                    {% set originalPrice = product.custom_attribute_values[ORIGINAL_PRICE_KEY].number_value|default(null) %}
+                    {% set currentPrice = priceText|replace({' USD': '', ' €': '', ',': '.'})|number_format(2, '.', '') %}
+                    {% set originalPriceNum = originalPrice|default(0) %}
+
+                    {# Détermine le statut de la promotion #}
+                    {% if originalPrice is not null and originalPriceNum > currentPrice %}
+
+                        {# PRIX RÉEL (Barré) - Ancien prix #}
+                        <del class="text-muted fs-4 me-3">
+                            {{ originalPriceNum|number_format(2, ',', ' ') }} USD
+                        </del>
+
+                    {% else %}
+                        {# PRIX NORMAL (Actuel) - Si vous voulez afficher priceText une deuxième fois quand il n'y a pas de promo, sinon supprimez ce 'else' et laissez seulement le 'del' dans le 'if' #}
+                        {# NOTE: L'affichage du priceText est déjà fait dans le <h2>, ce bloc 'else' est donc probablement redondant et pourrait être supprimé si priceText est suffisant.
+           Si vous le laissez, ce bloc 'else' s'affichera à côté du <h2>. #}
+                        <span class="text-success fs-2 fw-bold">{{ priceText }}</span>
+                    {% endif %}
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+                <div class="bg-light p-4 rounded mb-4 shadow-sm product-description-box">
+                    {% if descriptionHtml is defined and descriptionHtml is not empty %}
+                        <p class="text-secondary mb-0">{{ descriptionHtml|raw }}</p>
+                    {% else %}
+                        <p class="text-secondary mb-0">Description detail empty.</p>
+                    {% endif %}
+                </div>
+
+
+               
+				
+												
+				{% set price_value = priceText | trim %}
+				{% if price_value is empty %}
+					 <a class="btn btn-purple btn-lg mt-3" href="{{ path('app_shop_redirect_link_extern', { 'id': product.id }) }}">Book Appointement</a>
+				{% else %}
+					  <a class="btn btn-purple btn-lg mt-3" href="{{ path('app_shop_liste', { 'add': product.id }) }}">
+                    Add to Cart <i class="bi bi-cart-plus-fill ms-2"></i>
+                </a>
+				{% endif %}
+
+				
+				
+				
+				
+				
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-danger" role="alert">
+            Description detail empty.
+        </div>
+    {% endif %}
+</div>
+
+<script>
+    function updateMainImage(thumbnail) {
+        const mainImage = document.getElementById('main-product-image');
+        const mainImageZoomLink = document.getElementById('main-product-image-zoom');
+
+        mainImage.src = thumbnail.src;
+        mainImageZoomLink.href = thumbnail.src; // Cette ligne est cruciale
+    }
+</script>
+

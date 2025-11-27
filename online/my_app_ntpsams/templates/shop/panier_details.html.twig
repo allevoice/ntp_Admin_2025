@@ -1,0 +1,86 @@
+
+
+
+
+
+<div class="container py-5">
+    {# Utilisation de la fonction 'empty()' de Twig pour vérifier si le tableau est vide #}
+    {% if cart_items is empty %}
+        <p class="lead text-center">
+            Your cart is empty. <br>
+            {# Remplacer 'shop.php' par la route Symfony de votre catalogue #}
+            <a href="{{ path('app_shop_liste') }}" class="btn btn-outline-primary btn-sm">Return to shop</a>
+        </p>
+
+    {% else %}
+        <h2 class="mb-4 text-center">Your Cart</h2>
+
+        <div class="table-responsive">
+            {# Remplacer 'catalogue.php' par la route Symfony qui gère la mise à jour du panier #}
+            <form action="{{ path('app_shop_card_update') }}" method="post">
+                <table class="table table-striped table-hover align-middle">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col" class="text-center">Quantity</th>
+                        <th scope="col" class="text-center">Unit Price</th>
+                        <th scope="col" class="text-center">Total</th>
+                        <th scope="col"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    {# Boucle sur les articles du panier #}
+                    {% for prodId, prod in cart_items %}
+                        {# Calcul du sous-total directement en Twig #}
+                        {% set subtotal = prod.price * prod.qty %}
+
+                        <tr>
+                            {# Utilisation du filtre 'e' (escape) pour la sécurité, équivalent à htmlspecialchars() #}
+                            <td>{{ prod.name|e }}</td>
+                            <td>
+                                {# Utilisation de l'interpolation pour les noms des champs de formulaire #}
+                                <input type="number"
+                                       name="qty[{{ prodId }}]"
+                                       value="{{ prod.qty }}"
+                                       min="1"
+                                       class="form-control text-center"
+                                >
+                            </td>
+                            {# Utilisation du filtre number_format de Twig #}
+                            <td class="text-center">{{ prod.price|number_format(2, ',', ' ') }} {{ currency }}</td>
+                            <td class="text-center">{{ subtotal|number_format(2, ',', ' ') }} {{ currency }}</td>
+                            <td class="text-center">
+                                {# Utilisation du path() de Symfony pour générer l'URL de suppression #}
+                                <a href="{{ path('app_shop_card_del', {'id': prodId}) }}"
+                                   class="btn btn-sm btn-outline-danger"
+                                   title="Supprimer"
+                                >
+                                    <i class="bi bi-x-lg"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-end mb-3">
+                    <button type="submit" name="update" class="btn btn-secondary">Update Cart</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="card p-3 my-4">
+            <div class="d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">Total :</h5>
+                {# Utilisation de la variable total_price passée par le contrôleur #}
+                <h5 class="mb-0 fw-bold">{{ total_price|number_format(2, ',', ' ') }} {{ currency }}</h5>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            {# Remplacer 'checkout.php' et 'shop.php' par vos routes Symfony #}
+            <a href="{{ path('app_shop_checkout') }}" class="btn btn-primary btn-lg">Proceed to Checkout</a>
+            <a href="{{ path('app_shop_liste') }}" class="btn btn-outline-secondary btn-lg">Return to Shop</a>
+        </div>
+    {% endif %}
+</div>

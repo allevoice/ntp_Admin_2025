@@ -1,0 +1,175 @@
+
+<form action="{{ path('app_contact_send_form') }}" method="post" class="php-email-form">
+
+    <div class="my-3 text-center">
+
+
+        {% for message in app.flashes('success') %}           
+            <div class="alert alert-success" role="alert">
+                {{ message}}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}            
+            <div class="alert alert-error" role="alert">
+                {{ message}}
+            </div>
+        {% endfor %}
+
+        {% for message in app.flashes('warning') %}
+            <div class="alert alert-warning" role="alert">
+                {{ message}}
+            </div>
+        {% endfor %}
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 form-group">
+            <label for="name" class="form-label">Your full name</label>
+
+            {% set name_class = errors.name is defined ? 'is-invalid' : (form_vars.name_value is not empty and app.request.method == 'POST' ? 'is-valid' : '') %}
+
+            <input type="text"
+                   name="name"
+                   class="form-control {{ name_class }}"
+                   id="name"
+                   placeholder="Ex: Jean Dupont"
+                   required
+                   value="{{ form_vars.name_value|default('') }}">
+
+            <div class="invalid-feedback d-block text-danger">
+                {{ errors.name|default('') }}
+            </div>
+
+            <div class="valid-feedback d-block">
+                {% if name_class == 'is-valid' %}
+                    <i class="bi bi-check-circle-fill me-1"></i> {{ success_messages.name }}
+                {% endif %}
+            </div>
+        </div>
+
+        
+        <div class="col-md-6 form-group mt-3 mt-md-0">
+            <label for="email" class="form-label">Your email</label>
+
+            {% set email_class = errors.email is defined ? 'is-invalid' : (form_vars.email_value is not empty and app.request.method == 'POST' ? 'is-valid' : '') %}
+
+            <input type="email"
+                   class="form-control {{ email_class }}"
+                   name="email"
+                   id="email"
+                   placeholder="Ex: your@exemple.com"
+                   required
+                   value="{{ form_vars.email_value|default('') }}">
+
+            <div class="invalid-feedback d-block text-danger">
+                {{ errors.email|default('') }}
+            </div>
+            <div class="valid-feedback d-block">
+                {% if email_class == 'is-valid' %}
+                    <i class="bi bi-check-circle-fill me-1"></i> {{ success_messages.email }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="form-group mt-3">
+        <label for="subject" class="form-label">Subject</label>
+
+        {% set subject_class = errors.subject is defined ? 'is-invalid' : (form_vars.subject_value is not empty and app.request.method == 'POST' ? 'is-valid' : '') %}
+
+        <input type="text"
+               class="form-control {{ subject_class }}"
+               name="subject"
+               id="subject"
+               placeholder="The subject of your message"
+               required
+               value="{{ form_vars.subject_value|default('') }}">
+
+        <div class="invalid-feedback d-block text-danger">
+            {{ errors.subject|default('') }}
+        </div>
+        <div class="valid-feedback d-block">
+            {% if subject_class == 'is-valid' %}
+                <i class="bi bi-check-circle-fill me-1"></i> {{ success_messages.subject }}
+            {% endif %}
+        </div>
+    </div>
+
+    
+    <div class="form-group mt-3">
+        <label for="message" class="form-label">Message</label>
+
+        {% set message_class = errors.message is defined ? 'is-invalid' : (form_vars.message_value is not empty and app.request.method == 'POST' ? 'is-valid' : '') %}
+
+        <textarea class="form-control {{ message_class }}"
+                  name="message"
+                  id="message"
+                  rows="5"
+                  placeholder="Your message here"
+                  required
+                  maxlength="{{ form_vars.max_length|default(200) }}"
+        >{{ form_vars.message_value|default('') }}</textarea>
+
+        <small id="charCount" class="form-text text-muted d-block text-end">
+            {{ form_vars.max_length|default(200) }} caractères restants
+        </small>
+
+        <div class="invalid-feedback d-block text-danger">
+            {{ errors.message|default('') }}
+        </div>
+        <div class="valid-feedback d-block">
+            {% if message_class == 'is-valid' %}
+                <i class="bi bi-check-circle-fill me-1"></i> {{ success_messages.message }}
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="text-center form-submit pt-4">
+        <button type="submit" class="btn btn-primary w-100">
+            Send Message
+        </button>
+    </div>
+
+</form>
+
+
+{% block javascripts %}
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const messageInput = document.getElementById('message');
+            const charCounter = document.getElementById('charCount');
+            const maxLength = parseInt(messageInput.getAttribute('maxlength'));
+
+            if (!messageInput || !charCounter || !maxLength) {
+                return;
+            }
+
+            function updateCounter() {
+                const currentLength = messageInput.value.length;
+                let remaining = maxLength - currentLength;
+
+                if (remaining < 0) {
+                    remaining = 0;
+                }
+
+                charCounter.textContent = `${remaining} caractères restants`;
+
+                if (remaining <= 10) {
+                    charCounter.style.color = 'red';
+                } else if (remaining <= 50) {
+                    charCounter.style.color = 'orange';
+                } else {
+                    charCounter.style.color = 'gray';
+                }
+            }
+
+            messageInput.addEventListener('input', updateCounter);
+            updateCounter();
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,145 @@
+{% extends 'theme_adm/theme_adm.html.twig' %}
+
+{% block title %}{{titlepage}}{% endblock %}
+
+{% block body %}
+
+    {% include 'theme_adm/breadcrumbtitle.html.twig' %}
+
+    <div class="container mt-5">
+        <h2>Liste des Éléments (Pagination Manuelle Bootstrap 5)</h2>
+
+        {# FORMULAIRE DE RECHERCHE (Méthode GET - Crée le paramètre ?q=...) #}
+        <form method="get" class="d-flex mb-4" action="{{ path('app_admin_admin') }}">
+            <input class="form-control me-2" type="search" placeholder="Rechercher par titre..." name="q" value="{{ searchTerm|default('') }}">
+            <button class="btn btn-primary" type="submit">Rechercher</button>
+            {% if searchTerm is not empty %}
+                <a href="{{ path('app_admin_admin') }}" class="btn btn-outline-secondary ms-2">Réinitialiser</a>
+            {% endif %}
+        </form>
+
+        {# TABLEAU BOOTSTRAP 5 #}
+        <div class="table-responsive">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Titre</th>
+                    <th>Statut</th>
+                    <th>Créé le</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.id }}</td>
+                        <td>{{ item.title }}</td>
+                        <td><span class="badge bg-secondary">{{ item.statuts }}</span></td>
+                        <td>{{ item.created_at|date('Y-m-d H:i') }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">Aucun résultat trouvé.</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+
+
+
+        {% if totalPages > 1 %}
+
+            {# Prépare la chaîne de requête pour la recherche (ex: &q=terme) #}
+            {% set search_query = searchTerm ? '&q=' ~ searchTerm : '' %}
+
+            <nav aria-label="Navigation des résultats" class="d-flex justify-content-center">
+                <ul class="pagination">
+
+                    {# 1. Lien PRÉCÉDENT #}
+                    <li class="page-item {% if currentPage <= 1 %}disabled{% endif %}">
+                        <a class="page-link"
+                           href="{{ path('app_admin_admin', {'page': currentPage - 1}) ~ search_query }}"
+                           aria-disabled="{% if currentPage <= 1 %}true{% else %}false{% endif %}"
+                           aria-label="Précédent">&laquo; Précédent</a>
+                    </li>
+
+                    {# Définit la plage des numéros de page à afficher (2 avant, 2 après) #}
+                    {% set start_page = (currentPage - 2) > 0 ? currentPage - 2 : 1 %}
+                    {% set end_page = (currentPage + 2) < totalPages ? currentPage + 2 : totalPages %}
+
+                    {# 2. Lien vers la page 1 (si non inclus dans la plage) #}
+                    {% if start_page > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('app_admin_admin', {'page': 1}) ~ search_query }}">1</a>
+                        </li>
+                        {# Affichage des points de suspension (...) #}
+                        {% if start_page > 2 %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endif %}
+
+                    {# 3. Liens des pages intermédiaires (Plage réduite) #}
+                    {% for i in start_page..end_page %}
+                        <li class="page-item {% if i == currentPage %}active{% endif %}">
+                            {% if i == currentPage %}
+                                <span class="page-link">{{ i }}</span>
+                            {% else %}
+                                <a class="page-link"
+                                   href="{{ path('app_admin_admin', {'page': i}) ~ search_query }}">
+                                    {{ i }}
+                                </a>
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+
+                    {# 4. Lien vers la dernière page (si non inclus dans la plage) #}
+                    {% if end_page < totalPages %}
+                        {# Affichage des points de suspension (...) #}
+                        {% if end_page < totalPages - 1 %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                        <li class="page-item">
+                            <a class="page-link" href="{{ path('app_admin_admin', {'page': totalPages}) ~ search_query }}">{{ totalPages }}</a>
+                        </li>
+                    {% endif %}
+
+                    {# 5. Lien SUIVANT #}
+                    <li class="page-item {% if currentPage >= totalPages %}disabled{% endif %}">
+                        <a class="page-link"
+                           href="{{ path('app_admin_admin', {'page': currentPage + 1}) ~ search_query }}"
+                           aria-disabled="{% if currentPage >= totalPages %}true{% else %}false{% endif %}"
+                           aria-label="Suivant">Suivant &raquo;</a>
+                    </li>
+                </ul>
+            </nav>
+        {% endif %}
+
+    </div>
+
+
+
+
+
+
+    <section class="section dashboard">
+        <div class="row">
+{#            {%  include "role/content/content_liste.php" %}#}
+
+            {%  include "theme_adm/side_columns.html.twig" %}
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

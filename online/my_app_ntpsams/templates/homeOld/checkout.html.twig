@@ -1,0 +1,161 @@
+
+<section id="checkout-page" class="checkout-page section py-5">
+    <div class="container" data-aos="fade-up">
+
+        <div class="section-title mb-4">
+            <h2>💳 Finaliser la Commande</h2>
+            <p>Veuillez vérifier les informations de facturation, de livraison et le récapitulatif de votre commande.</p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-lg-8">
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h4 class="card-title mb-4 border-bottom pb-2">1. Coordonnées & Livraison</h4>
+
+                        <form id="checkout-form">
+                            <h5 class="mb-3 text-primary">Informations de Contact</h5>
+                            <div class="row g-3 mb-4">
+                                <div class="col-md-6">
+                                    <label for="checkoutEmail" class="form-label">Email *</label>
+                                    <input type="email" class="form-control" id="checkoutEmail" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="checkoutPhone" class="form-label">Téléphone</label>
+                                    <input type="tel" class="form-control" id="checkoutPhone">
+                                </div>
+                            </div>
+
+                            <h5 class="mb-3 text-primary">Adresse de Livraison</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="checkoutPrenom" class="form-label">Prénom *</label>
+                                    <input type="text" class="form-control" id="checkoutPrenom" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="checkoutNom" class="form-label">Nom *</label>
+                                    <input type="text" class="form-control" id="checkoutNom" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="checkoutAdresse" class="form-label">Adresse *</label>
+                                    <input type="text" class="form-control" id="checkoutAdresse" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="checkoutVille" class="form-label">Ville *</label>
+                                    <input type="text" class="form-control" id="checkoutVille" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="checkoutCodePostal" class="form-label">Code Postal *</label>
+                                    <input type="text" class="form-control" id="checkoutCodePostal" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="checkoutPays" class="form-label">Pays *</label>
+                                    <select class="form-select" id="checkoutPays" required>
+                                        <option value="">Choisir...</option>
+                                        <option value="FR">France</option>
+                                        <option value="CA">Canada</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <hr class="my-4">
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" value="" id="billingSameAsShipping" checked>
+                                <label class="form-check-label" for="billingSameAsShipping">
+                                    L'adresse de facturation est la même que l'adresse de livraison
+                                </label>
+                            </div>
+
+                            <h4 class="card-title mb-4 border-bottom pb-2">2. Méthode de Paiement</h4>
+                            <div class="my-3">
+                                <div class="form-check">
+                                    <input id="creditCard" name="paymentMethod" type="radio" class="form-check-input" checked required>
+                                    <label class="form-check-label" for="creditCard"><i class="bi bi-credit-card me-2"></i>Carte de Crédit</label>
+                                </div>
+                                <div class="form-check">
+                                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
+                                    <label class="form-check-label" for="paypal"><i class="bi bi-paypal me-2"></i>PayPal</label>
+                                </div>
+                                <div class="form-check">
+                                    <input id="transfer" name="paymentMethod" type="radio" class="form-check-input" required>
+                                    <label class="form-check-label" for="transfer"><i class="bi bi-bank me-2"></i>Virement Bancaire</label>
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mt-3">
+                                <div class="col-md-6">
+                                    <label for="cc-name" class="form-label">Nom sur la Carte</label>
+                                    <input type="text" class="form-control" id="cc-name" placeholder="" required>
+                                    <div class="form-text">Nom complet tel qu'il apparaît sur la carte</div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cc-number" class="form-label">Numéro de Carte</label>
+                                    <input type="text" class="form-control" id="cc-number" placeholder="" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="cc-expiration" class="form-label">Expiration</label>
+                                    <input type="text" class="form-control" id="cc-expiration" placeholder="MM/AA" required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="cc-cvv" class="form-label">CVV</label>
+                                    <input type="text" class="form-control" id="cc-cvv" placeholder="" required>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="card shadow-sm" style="top: 100px;">
+                    <div class="card-body">
+                        <h4 class="card-title mb-3 border-bottom pb-2">3. Votre Commande</h4>
+
+                        <ul class="list-group list-group-flush mb-3 small">
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Service Conseil en Stratégie (x1)
+                                <span>120.00 €</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center px-0">
+                                Rapport d'Analyse de Marché (x2)
+                                <span>159.98 €</span>
+                            </li>
+                        </ul>
+
+                        <div class="d-flex justify-content-between py-1 small border-top">
+                            <span>Sous-Total :</span>
+                            <span class="fw-bold">279.98 €</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1 small">
+                            <span>Livraison :</span>
+                            <span class="fw-bold text-success">Gratuite</span>
+                        </div>
+                        <div class="d-flex justify-content-between py-1 small border-bottom mb-3">
+                            <span>Taxes (TVA 20%) :</span>
+                            <span class="fw-bold">55.99 €</span>
+                        </div>
+
+                        <div class="d-flex justify-content-between pt-2">
+                            <h5 class="fw-bold mb-0">TOTAL FINAL :</h5>
+                            <h5 class="fw-bold text-primary mb-0">335.97 €</h5>
+                        </div>
+
+                        <div class="d-grid mt-4">
+                            <button type="submit" form="checkout-form" class="btn btn-primary btn-lg">
+                                Confirmer & Payer 335.97 €
+                            </button>
+                        </div>
+
+                        <p class="small text-center text-muted mt-3">
+                            En cliquant sur "Confirmer & Payer", vous acceptez nos <a href="#">Conditions générales</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

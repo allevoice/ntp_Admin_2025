@@ -1,0 +1,156 @@
+<style>
+    .form-control ,input[type="email"]{
+        /* Bordure par défaut plus visible */
+        border-color: #999999;
+        border-width: 1px;
+    }
+
+    /* 2. État :focus (CLÉ : Rendre le champ actif plus fort) */
+    .form-control:focus {
+        /* Retire la bordure pâle par défaut */
+        outline: 0;
+
+        /* Rend la bordure plus épaisse et plus vive (Bleu Bootstrap standard) */
+        border-color: #0d6efd;
+        border-width: 2px;
+
+        /* Augmente l'opacité de l'ombre de mise au point (le "glow") */
+        /* Utilisez une couleur plus opaque ou votre couleur de thème */
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.5);
+
+        /* Optionnel : Si vous voulez une bordure VRAIMENT forte SANS l'ombre */
+        /* box-shadow: none; */
+    }
+
+    .input-group:focus-within .btn {
+        /* Réapplique la couleur de bordure sur le bouton adjacent lorsque l'input est en focus */
+        border-color: #0a3622;
+
+        /* Assure que le bouton participe visuellement à l'effet de glow/ombre */
+        box-shadow: 0 0 0 0.25rem rgba(10, 54, 34, 0.5);
+        z-index: 3; /* Assurez-vous qu'il est au-dessus du glow */
+    }
+
+    /* Optionnel : Rendre la bordure du bouton plus visible par défaut */
+    .input-group .btn {
+        border-color: #AAAAAA;
+    }
+    .form-control::[placeholder],input[type="email"] {
+        color: #000000; /* Gris foncé (remplace le gris très clair par défaut) */
+        opacity: 1;     /* Assure qu'il n'est pas rendu transparent */
+    }
+
+    /* Ciblage pour Firefox */
+    .form-control::-moz-placeholder {
+        color: #000000;
+        opacity: 1;
+    }
+
+    /* Ciblage pour Internet Explorer (IE) */
+    .form-control:-ms-input-placeholder {
+        color: #000000;
+    }
+
+    /* Ciblage pour Edge (souvent redondant avec ::placeholder, mais pour la sécurité) */
+    .form-control::-ms-input-placeholder {
+        color: #000000;
+    }
+    /* 1. Règle pour l'INPUT lui-même (Assure une bordure vive) */
+    /* Ciblez l'input lorsque son parent est en focus */
+    .input-group:focus-within .form-control {
+        /* Utilisation de votre couleur de thème (vert foncé) */
+        border-color: #0a3622;
+        border-width: 2px;
+        z-index: 3; /* Assure que le champ est au-dessus du bouton */
+    }
+
+    /* 2. Règle pour le BOUTON ADJACENT (Clé pour l'ensemble) */
+    /* Cible le bouton à l'intérieur de l'input-group lorsque l'un de ses enfants est en focus */
+    .input-group:focus-within .btn {
+        /* Applique la même couleur de bordure sur le bouton */
+        border-color: #0a3622;
+
+        /* Applique l'effet d'ombre (glow) au BOUTON et à l'ensemble */
+        box-shadow: 0 0 0 0.25rem rgba(10, 54, 34, 0.5);
+        z-index: 2; /* S'assure qu'il est bien intégré */
+    }
+
+    /* 3. Ajustement de l'ombre sur l'Input seul pour un effet unifié */
+    /* Retire l'ombre de l'input et la laisse au parent pour unifier le style */
+    .input-group:focus-within .form-control:focus {
+        box-shadow: none;
+    }
+</style>
+
+
+
+<section id="login-page" class="login-page section py-5 ">
+    <div class="container">
+
+{#        <div class="section-title mb-4 text-center">
+            <h2>👤 Connexion à votre Compte</h2>
+            <p>Accédez à votre espace client pour gérer vos commandes et vos informations.</p>
+        </div>#}
+
+        <div class="row justify-content-center">
+            <div class="col-lg-5 col-md-8">
+                <div class="card shadow-lg p-4 p-md-5">
+                    <div class="card-body">
+
+                        <h4 class="card-title text-center mb-4">{% trans %}log_in{% endtrans %}</h4>
+
+                        <form action="{{ path('app_login_auth') }}" method="POST">
+
+                            <div class="mb-3">
+                                <label for="inputEmail" class="form-label">{% trans %}label_address_email{% endtrans %}</label>
+                                <input type="email" class="form-control" id="inputEmail" name="email" title="{% trans %}label_address_email{% endtrans %}" placeholder="{% trans %}email_address_placeholder{% endtrans %}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="password" class="form-label">{% trans %}label_pwd_title{% endtrans %}</label>
+                                <div class="input-group">
+                                    <input type="password" class="form-control" id="password" name="password" title="{% trans %}label_pwd_title{% endtrans %}" placeholder="{% trans %}pwd_title_placeholder{% endtrans %}"  required>
+                                    <button class="btn btn-outline-secondary" type="button" id="togglePassword">
+                                        <i class="bi bi-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between mb-4 small">
+                                <a href="#" class="text-primary">{% trans %}link_title_forget_pwd{% endtrans %}</a>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">{% trans %}btn_title_login{% endtrans %}</button>
+                            </div>
+                        </form>
+
+                        <div class="text-center mt-4">
+                            <p class="small text-muted mb-0">{% trans %}title_texte_account{% endtrans %}</p>
+                            <a href="#" class="text-primary fw-bold">{% trans %}link_title_account{% endtrans %}</a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const togglePassword = document.getElementById('togglePassword');
+        const passwordInput = document.getElementById('password');
+
+        if (togglePassword && passwordInput) {
+            togglePassword.addEventListener('click', function() {
+                const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                passwordInput.setAttribute('type', type);
+                this.querySelector('i').classList.toggle('bi-eye');
+                this.querySelector('i').classList.toggle('bi-eye-slash');
+            });
+        }
+    });
+</script>

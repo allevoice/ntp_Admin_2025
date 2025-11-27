@@ -1,0 +1,191 @@
+<style>
+/* ================================================= */
+/* ================================================= */
+/* STYLES ADAPTATIFS (Hauteur Définie par l'Image)  */
+/* ================================================= */
+
+.minicarouselsection{
+    margin: 0 !important;
+    padding: 0px  0px 0px 0px !important;
+}
+
+.page-title {
+    padding:0px 0px 0px 0px !important;
+    height:auto;
+}
+
+/* ------------------------------------------------- */
+/* 1. STYLES DE BASE (Conteneurs Principaux) */
+/* ------------------------------------------------- */
+.page-title.hero-height {
+    height: auto; 
+    min-height: 0; 
+    position: relative; /* Nécessaire pour contenir les enfants absolus */
+    overflow: hidden;
+    width: 100%;
+}
+
+/* ------------------------------------------------- */
+/* 2. STYLES DU CAROUSEL (L'ARRIÈRE-PLAN) */
+/* ------------------------------------------------- */
+#heroCarousel.full-background {
+    position: relative; 
+    width: 100%;
+    height: auto; 
+    z-index: 1;
+    margin: 0; 
+    padding: 0;
+}
+
+#heroCarousel .carousel-inner,
+#heroCarousel .carousel-item {
+    height: auto;
+    margin: 0;
+    padding: 0;
+}
+
+#heroCarousel img {
+    max-width: 100% !important;
+    width: 100%;
+    height: auto; 
+    display: block; 
+    object-fit: contain; 
+}
+
+/* OVERLAY (Ombre) */
+#heroCarousel .carousel-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* ------------------------------------------------- */
+/* 3. STYLES DU TITRE SUPERPOSÉ (.title-page-title h1) */
+/* ------------------------------------------------- */
+
+.title-page-title {
+    /* Clé: Positionnement en bas à gauche */
+    position: absolute; 
+    bottom: 0; /* Ancrer au bas du conteneur parent (.carousel-item) */
+    left: 0;   /* Ancrer à la gauche du conteneur parent */
+    right: auto; /* Permet au contenu de ne prendre que l'espace nécessaire */
+    top: auto;   /* Désactiver l'ancrage en haut */
+    
+    /* On utilise flex pour le centrage interne si nécessaire, mais ici on le laisse juste */
+    /* Pour respecter le 'd-md-flex' dans l'HTML */
+    display: flex;
+    justify-content: flex-start; /* Aligner le contenu à gauche */
+    align-items: flex-end; /* Aligner le contenu en bas */
+    
+    /* S'assurer que le conteneur prend la pleine largeur/hauteur pour gérer le positionnement */
+    width: 100%;
+    height: 100%;
+    
+    z-index: 4;
+    padding: 0;
+    margin: 0;
+}
+
+
+.title-page-title h1 {
+    color: white;
+    font-weight: bolder;
+    margin: 0; 
+    border-radius: 20px;
+    background: #1a3686;
+    padding: 10px 40px;
+    border: 3px solid #e3b223;
+    border-right: 3px solid #e3b223;
+    border-bottom: 3px solid #a47f04;
+    box-shadow: 5px 5px 15px rgba(246, 203, 103, 0.7);
+    text-align: left; /* Aligner le texte du titre à gauche */
+    line-height: 1.2;
+    max-width: 80%; 
+    
+    /* Ajouter un léger espacement par rapport aux bords de l'image (responsive) */
+    margin-bottom: 20px; /* Espace depuis le bas */
+    margin-left: 20px;   /* Espace depuis la gauche */
+}
+
+/* ------------------------------------------------- */
+/* 4. MEDIA QUERIES */
+/* ------------------------------------------------- */
+
+@media (min-width: 1200px) {
+    .title-page-title h1 {
+        padding: 15px 60px;
+        font-size: 2.5rem;
+    }
+}
+
+
+
+
+
+
+
+
+@media (max-width: 767px){
+    .minicarouselsection{
+        padding-top:3.5rem !important;
+        padding-bottom:-2px !important;
+        background-color:red;
+    }
+
+    .page-title {
+        padding: 0px 0px 0px 0px !important;
+        }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</style>
+
+{% if title_page==true %}
+<div class="minicarouselsection">
+    <div class="page-title position-relative hero-height space">
+
+        {# CAROUSEL #}
+        <div id="heroCarousel" class="carousel slide full-background" data-bs-ride="carousel">
+            <div class="carousel-inner carousel-inner-perso-brak">
+                <div class="title-page-title">
+                    <h1 class="d-none d-md-block">{{ title_page }}</h1>
+                </div>
+                <div class="carousel-item active">
+                    <img src="{{ asset('assets/img/scru2.png') }}" alt="Image 1">
+                </div>
+
+           {#  <div class="carousel-item">
+                <img src="{{ asset('assets/img/scru1.png') }}" alt="Image 1">
+            </div>
+            <div class="carousel-item">
+                <img src="{{ asset('assets/img/slider/slider-16.webp') }}" alt="Image 2">
+            </div> #}
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+

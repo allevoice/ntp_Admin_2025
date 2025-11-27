@@ -1,0 +1,204 @@
+<div class="container py-5">
+    <div class="row g-5">
+        {# Colonne de gauche: Formulaire client et paiement #}
+        <div class="col-md-7 col-lg-8">
+           <h1 class="mb-4">Payment Information</h1>
+            <form id="payment-form" class="needs-validation" novalidate>
+                <h2 class="h5 mb-3">Customer Details</h2>
+
+                {# ---------------- FORMULAIRE CLIENT ---------------- #}
+                <div class="row g-3">
+                    <input type="hidden" class="form-control" id="current_key" name="current_key" value="{{ current }}" hidden>
+
+                    <div class="col-md-6">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="customer_name" required>
+                        <div class="invalid-feedback">A valid name is required.</div>
+                    </div>
+
+                <div class="col-md-6">
+                    <label for="firstname" class="form-label">First Name</label>
+                    <input type="text" class="form-control" id="firstname" name="customer_firstname" required>
+                    <div class="invalid-feedback">A valid first name is required.</div>
+                </div>
+                <div class="col-12">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="email" name="customer_email" required>
+                    <div class="invalid-feedback">A valid email address is required.</div>
+                </div>
+                <h3>Shipping Information</h3>
+                
+                <div class="mb-3">
+                    <label for="customer_address_full" class="form-label">Full Address (Street and number)</label>
+                    <input type="text" class="form-control" id="customer_address_full" name="customer_address_full" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="customer_city" class="form-label">City</label>
+                    <input type="text" class="form-control" id="customer_city" name="customer_city" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="customer_zipcode" class="form-label">Zip Code</label>
+                    <input type="text" class="form-control" id="customer_zipcode" name="customer_zipcode" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="customer_phone" class="form-label">Phone</label>
+                    {# The 'tel' type is recommended for phones #}
+                    <input type="tel" class="form-control" id="customer_phone" name="customer_phone" required>
+                </div>
+                                
+                
+                
+                
+                
+                
+                
+                
+                
+                </div>
+
+                <hr class="my-4">
+
+               <h2 class="h5 mb-3">Payment Details</h2>
+                <div id="card-container"></div>
+
+                {# Bouton de paiement utilisant le total TTC calculé #}
+                <button id="card-button" class="w-100 btn btn-primary btn-lg mt-3" type="button">
+                    Pay **{{ totals.total_price|number_format(2, '.', ' ') }} {{ totals.currency }}**
+                </button>
+                <div id="payment-message" class="message"></div>
+            </form>
+        </div>
+
+        {# Colonne de droite: Récapitulatif de commande #}
+        <div class="col-md-5 col-lg-4 order-md-last">
+            <div class="card bg-light p-4">
+                <h2 class="h5 mb-3">Your Order</h2>
+
+                {% if cart_items is empty %}
+                    <p class="text-center">Your cart is empty.</p>
+                {% else %}
+                    <ul class="list-group mb-3">
+                        {# Liste des articles du panier #}
+                        {% for prodId, prod in cart_items %}
+                            {% set subtotal = prod.price * prod.qty %}
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div>
+                                    <h6 class="my-0">{{ prod.name|e }}</h6>
+                                    <small class="text-muted">Qty: {{ prod.qty }}</small>
+                                </div>
+                                <span class="text-muted">{{ subtotal|number_format(2, '.', ' ') }} {{ totals.currency }}</span>
+                            </li>
+                        {% endfor %}
+
+                        {# Lignes de total #}
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <span class="text-muted">Sous-total (HT)</span>
+                            <strong>{{ totals.sub_total|number_format(2, '.', ' ') }} {{ totals.currency }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <span class="text-muted">Tax (VAT)</span>
+                            <strong>({{tax_value*100 }}%){{ totals.tax_amount|number_format(2, '.', ' ') }} {{ totals.currency }}</strong>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between fw-bold">
+                            <span>Tax (VAT)</span>
+                            <strong>{{ totals.total_price|number_format(2, '.', ' ') }} {{ totals.currency }}</strong>
+                        </li>
+                    </ul>
+                {% endif %}
+                <img src="{{ asset('assets/img/securiser_us.jpeg') }}" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+<script async>
+    // Variables du contrôleur passées au JavaScript
+    const APPLICATION_ID = '{{ square_app_id }}';
+    const LOCATION_ID = '{{ square_location_id }}';
+    const PAYMENT_PROCESS_URL = '{{ path("app_shop_payment_process") }}'; // Assurez-vous que cette route existe
+
+    async function initializePayments() {
+        if (!window.Square) { throw new Error('Square.js failed to load properly'); }
+        const payments = window.Square.payments(APPLICATION_ID, LOCATION_ID);
+        const card = await payments.card();
+        await card.attach('#card-container');
+        return card;
+    }
+
+    async function handlePayment(card) {
+        const messageBox = document.getElementById('payment-message');
+        const button = document.getElementById('card-button');
+        messageBox.textContent = '';
+        messageBox.className = 'message';
+        button.disabled = true;
+
+        try {
+            const form = document.getElementById('payment-form');
+            if (!form.checkValidity()) {
+                form.classList.add('was-validated');
+                messageBox.classList.add('alert', 'alert-danger');
+                messageBox.textContent = 'Please fill in all required fields.';
+                return;
+            }
+
+            const formData = new FormData(form);
+            const customer = {};
+            for (let [key, value] of formData.entries()) {
+                customer[key] = value;
+            }
+
+            const result = await card.tokenize();
+            if (result.status !== 'OK') {
+                const errorMessage = result.errors[0]?.detail || 'Token Error.';
+                messageBox.classList.add('alert', 'alert-danger');
+                messageBox.textContent = errorMessage;
+                return;
+            }
+            const nonce = result.token;
+
+            // ⚠️ Envoi des données du panier au serveur
+            const cart = {{ cart_items|json_encode()|raw }};
+
+            const response = await fetch(PAYMENT_PROCESS_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                // Le serveur doit recalculer le total TTC et la taxe à partir de ce 'cart'
+                body: JSON.stringify({ nonce, cart, customer })
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                messageBox.classList.add('alert', 'alert-success');
+                messageBox.textContent = `Payment Successful ! ID: ${data.payment_id}`;
+                // Redirection
+                setTimeout(() => {
+                    window.location.href = data.redirect_url;
+                }, 2000);
+
+            } else {
+                messageBox.classList.add('alert', 'alert-danger');
+                messageBox.textContent = `Payment Failed : ${data.error}`;
+            }
+        } catch (e) {
+            messageBox.classList.add('alert', 'alert-danger');
+            messageBox.textContent = `An unexpected error has occurred : ${e.message}`;
+        } finally {
+            button.disabled = false;
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const card = await initializePayments();
+            const button = document.getElementById('card-button');
+            button.addEventListener('click', () => handlePayment(card));
+        } catch (e) {
+            const messageBox = document.getElementById('payment-message');
+            messageBox.classList.add('alert', 'alert-danger');
+            messageBox.textContent = `Systeme Payment Initialization Error: ${e.message}`;
+        }
+    });
+</script>

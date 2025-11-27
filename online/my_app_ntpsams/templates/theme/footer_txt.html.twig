@@ -1,0 +1,119 @@
+<footer id="footer" class="footer dark-background">
+
+    <div class="container">
+        <div class="row gy-5">
+
+            <div class="col-lg-4">
+                <div class="footer-content">
+                    <a href="{{ url('app_home_ln') }}" class="logo d-flex align-items-center mb-4" title=" {{ func_pageinfo()['titlesite'] }}">
+                        <span class="sitename">{{ func_pageinfo()['titlesitefooter'] }}</span>
+                    </a>
+                    <p class="mb-4">{{ func_pageinfo()['contentfooter']|raw }}</p>
+
+                    <div class="newsletter-form">
+                        <h5>Stay Updated</h5>
+                         <form action="{{ url('app_newsletter_form') }}" method="post" class="php-email-form" >
+                            <div class="input-group">
+                                <input type="email" name="email_address" class="form-control" placeholder="Your Email Address" required="">
+                                <button type="submit" class="btn-subscribe">
+                                    <i class="bi bi-send"></i>
+                                </button>
+                            </div>
+                        </form>
+                        {% for type, messages in app.flashes %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ type }} mt-3" role="alert">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-6">
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="{{ url('app_about_home',{'id':'1'}) }}"><i class="bi bi-chevron-right"></i> About</a></li>
+                        <li><a href="{{url('app_contact_form')}}"><i class="bi bi-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-6">
+                <div class="footer-links">
+                    <h4>Solutions</h4>
+                    <ul>
+                        {% for item in func_array_service_info_liste() %}
+                            <li><a href="{{ path('app_service_detail_page', { 'id': item.id, 'cmd': '2' }) }}"><i class="bi bi-chevron-right"></i>{{ item.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="footer-contact">
+                    <h4>Get in Touch</h4>
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="bi bi-geo-alt"></i>
+                        </div>
+                        <div class="contact-info">
+                            <p>{{ func_pageinfo()['addfull'] |raw }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="bi bi-telephone"></i>
+                        </div>
+                        <div class="contact-info">
+                            <p>{{ func_pageinfo().phone1 }}</p>
+                        </div>
+                    </div>
+
+                    <div class="contact-item">
+                        <div class="contact-icon">
+                            <i class="bi bi-envelope"></i>
+                        </div>
+                        <div class="contact-info">
+                            <p>{{ func_pageinfo().infomail }}</p>
+                        </div>
+                    </div>
+
+
+
+                    <div class="social-links">
+                        {% for itemsocial in func_pageinfomedia() %}
+                            <a href="{{ itemsocial.url}}" title="{{ itemsocial.title }}" target="_blank">
+                                <i class="{{ itemsocial.icon }}"></i>
+                            </a>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="copyright">
+                        <p>© <span>Copyright</span> {{ func_pageinfo().right_year }} -  {{ "now"|date("Y") }}
+                            <strong class="px-1 sitename">{{ func_pageinfo().right_title }}</strong>
+                            <span>All Rights Reserved</span></p>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="credits"> Designed by <a href="{{ func_pageinfo().right_design_link }}">{{ func_pageinfo().right_design }}</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
+

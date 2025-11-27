@@ -1,0 +1,89 @@
+<style>
+    .perso{
+        margin-top: -4%;
+    }
+
+    @media (max-width: 992px) {
+        .perso{
+            margin-top:0px;
+        }
+    }
+</style>
+
+
+{% if why %}
+
+    <section id="about" class="about section">
+
+        <!-- Section Title -->
+        <div class="container section-title">
+            {% if why.title is not empty %}
+                <h2>{{ why.title }}</h2>
+            {% endif %}
+            {% if why.content is not empty %}
+                <p>{{ why.content }}</p>
+            {% endif %}
+        </div><!-- End Section Title -->
+
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-6 position-relative">
+                    <div class="about-img" data-aos="fade-right">
+                        <img src="{{ asset('assets/img/slider/'~why.image) }}" class="img-fluid" alt="">
+                    </div>
+
+                    <div class="projects-badge" data-aos="fade-left">
+                        {% if why.title_etiquet is not empty %}
+                            <h2>{{ why.title_etiquet }}</h2>
+                        {% endif %}
+
+                        {% if why.content_etiquet is not empty %}
+                            <p>{{ why.content_etiquet }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-lg-6 perso" data-aos="fade-left">
+                    {% if why.title_content is not empty %}
+                        <h2 class="display-4 fw-bold mb-4">{{ why.title_content }}</h2>
+                    {% endif %}
+
+                    {% if why.content_content is not empty %}
+                        <p class="lead mb-4">{{ why.content_content }}</p>
+                    {% endif %}
+
+                    <div class="features">
+
+                        {% for items in whysub %}
+                            <div class="feature-item mb-4">
+                                <div class="feature-icon">
+                                    <i class="{{ items.icon }}"></i>
+                                </div>
+                                <div class="feature-content">
+                                    <h4>{{ items.title }}</h4>
+                                    <p>
+                                    {{ items.content }}
+                                        {% if items.id | filter_whyonsub %}
+                                        <ul class="check-list">
+                                            {% for chechliste in items.id|filter_whyonsub %}
+                                                <li><i class="bi bi-check-circle"></i>
+                                                    {{ chechliste.content }}
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                    </p>
+                                </div>
+                            </div>
+
+                        {% endfor %}
+                        <a href="{{ url('app_service_liste') }}" class="btn btn-primary btn-lg mt-4">{{ 'learn_more'|trans }}</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </section><!-- /About Section -->
+{% endif %}
+

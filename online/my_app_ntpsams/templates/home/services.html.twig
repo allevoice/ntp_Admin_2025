@@ -1,0 +1,136 @@
+<style>
+    .services .swiper-navigation {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 0;
+    }
+</style>
+
+
+{% if services_data %}
+    <section id="services" class="services section">
+
+        <!-- Section Title -->
+        {% if services_data.title  %}
+            <div class="container section-title">
+                {% if services_data.title %}
+                    <h2>{{ services_data.title }}</h2>
+                {% endif %}
+                {% if services_data.content %}
+                    <p>{{ services_data.content|raw}}</p>
+                {% endif %}
+            </div>
+        {% endif %}
+
+
+
+
+
+        <div class="container" data-aos="fade-up">
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="services-content" data-aos="fade-left">
+                        {% if services_data.subtitle  %}
+                            <span class="subtitle">{{ services_data.subtitle }}</span>
+                        {% endif %}
+                        <h2>{{ services_data.title_sub }}</h2>
+                        <p data-aos="fade-right" data-aos-duration="800">{{ services_data.content_sub|raw }}</p>
+                        <div class="mt-4" data-aos="fade-right" data-aos-duration="1100">
+                            <a href="{{ path('app_service_detail_page', { 'id': services_data.id, 'cmd': '1' }) }}"
+                               title="{{ services_data.subtitle }}"
+                               class="btn-consultation">
+                                <span>{{ 'request_botton_consultation'| trans }}</span><i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="services-image" data-aos="fade-left">
+                        <img src="{{ asset('') }}assets/img/services/{{ services_data.img }}" alt="{{ services_data.subtitle }}" class="img-fluid">
+                        <div class="shape-circle"></div>
+                        <div class="shape-accent"></div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+
+            <div class="row mt-5" data-aos="fade-up">
+                <div class="col-12">
+                    <div class="services-slider swiper init-swiper">
+                        <script type="application/json" class="swiper-config">
+                            {
+                                "slidesPerView": 3,
+                                "spaceBetween": 20,
+                                "loop": true,
+                                "speed": 600,
+                                "autoplay": {
+                                    "delay": 5000
+                                },
+                                "navigation": {
+                                    "nextEl": ".swiper-nav-next",
+                                    "prevEl": ".swiper-nav-prev"
+                                },
+                                "breakpoints": {
+                                    "320": {
+                                        "slidesPerView": 1
+                                    },
+                                    "768": {
+                                        "slidesPerView": 2
+                                    },
+                                    "992": {
+                                        "slidesPerView": 3
+                                    }
+                                }
+                            }
+                        </script>
+                        <div class="swiper-wrapper">
+                            {% for item in func_array_service_info_liste() %}
+                                <div class="swiper-slide">
+                                    <div class="service-card">
+                                        <div class="icon-box">
+                                            <i class="{{ item.icon }}"></i>
+                                        </div>
+                                        <a href="{{ path('app_service_detail_page', { 'id': item.id, 'cmd': '2' }) }}" class="arrow-link"><i class="bi bi-arrow-right"></i></a>
+                                        <div class="content">
+                                            <h4><a href="{{ path('app_service_detail_page', { 'id': item.id, 'cmd': '2' }) }}">{{ item.title }}</a></h4>
+                                            <p>{{ item.content|raw }}</p>
+                                            <div class="service-number">{{ loop.index }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-6 text-center">
+                    <a href="{{ url('app_service_liste') }}" class="btn btn-primary btn-lg">
+                        {{ 'all_service_botton_in_home'|trans }}
+                    </a>
+                </div>
+
+
+                <div class="col-6">
+                    <div class="swiper-navigation">
+                        <button class="swiper-nav-prev"><i class="bi bi-chevron-left"></i></button>
+                        <button class="swiper-nav-next"><i class="bi bi-chevron-right"></i></button>
+                    </div>
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </section><!-- /Services Section -->
+
+{% endif %}

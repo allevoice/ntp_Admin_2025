@@ -1,0 +1,18 @@
+{% extends 'theme_adm/theme_adm.html.twig' %}
+
+{% block title %}{{titlepage}}{% endblock %}
+
+{% block body %}
+
+    {% include 'theme_adm/breadcrumbtitle.html.twig' %}
+
+
+    <section class="section dashboard">
+        <div class="row">
+            {%  include "admin/role/content_new.html.twig" %}
+
+            {%  include "theme_adm/side_columns.html.twig" %}
+        </div>
+    </section>
+
+{% endblock %}

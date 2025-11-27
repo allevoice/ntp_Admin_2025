@@ -1,0 +1,5 @@
+RewriteEngine On
+RewriteBase /
+RewriteCond %{THE_REQUEST} /public_ntpsams/([^\s?]*) [NC]
+RewriteRule ^ %1 [L,NE,R=302]
+RewriteRule ^((?!public_ntpsams/).*)$ public_ntpsams/$1 [L,NC]
